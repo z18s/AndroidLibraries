@@ -1,4 +1,4 @@
-package com.example.myapp.lesson1.model;
+package com.example.myapp.lesson1.mvp.model;
 
 import androidx.annotation.UiThread;
 

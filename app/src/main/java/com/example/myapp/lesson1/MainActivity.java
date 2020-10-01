@@ -7,8 +7,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapp.lesson1.presenter.MainPresenter;
-import com.example.myapp.lesson1.view.MainView;
+import com.example.myapp.lesson1.mvp.presenter.MainPresenter;
+import com.example.myapp.lesson1.mvp.view.MainView;
 
 public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener {
 

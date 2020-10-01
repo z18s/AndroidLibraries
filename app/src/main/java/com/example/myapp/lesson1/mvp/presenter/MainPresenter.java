@@ -1,8 +1,8 @@
-package com.example.myapp.lesson1.presenter;
+package com.example.myapp.lesson1.mvp.presenter;
 
 import com.example.myapp.lesson1.R;
-import com.example.myapp.lesson1.model.CounterModel;
-import com.example.myapp.lesson1.view.MainView;
+import com.example.myapp.lesson1.mvp.model.CounterModel;
+import com.example.myapp.lesson1.mvp.view.MainView;
 
 public class MainPresenter {
     private CounterModel mModel = new CounterModel();
