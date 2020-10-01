@@ -49,6 +49,17 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void onClick(View view) {
-        mPresenter.counterClick(view.getId());
+
+        switch (view.getId()) {
+            case R.id.btn_counter1:
+                mPresenter.counterClick(0);
+                break;
+            case R.id.btn_counter2:
+                mPresenter.counterClick(1);
+                break;
+            case R.id.btn_counter3:
+                mPresenter.counterClick(2);
+                break;
+        }
     }
 }
