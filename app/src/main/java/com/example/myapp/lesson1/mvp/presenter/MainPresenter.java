@@ -13,21 +13,7 @@ public class MainPresenter {
         mView = view;
     }
 
-    public void counterClick(int id) {
-        /*
-        switch (id) {
-            case R.id.btn_counter1:
-                mView.setButtonText(0, String.valueOf(mModel.next(0)));
-                break;
-
-            case R.id.btn_counter2:
-                mView.setButtonText(1, String.valueOf(mModel.next(1)));
-                break;
-
-            case R.id.btn_counter3:
-                mView.setButtonText(2, String.valueOf(mModel.next(2)));
-                break;
-        }
-        */
+    public void counterClick(int index) {
+        mView.setButtonText(index, String.valueOf(mModel.next(index)));
     }
 }
