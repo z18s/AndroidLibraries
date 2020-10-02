@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         setContentView(R.layout.activity_main);
 
         mBtnCounter1 = findViewById(R.id.btn_counter1);
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         mBtnCounter1.setOnClickListener(this);
         mBtnCounter2.setOnClickListener(this);
         mBtnCounter3.setOnClickListener(this);
+        */
     }
 
     @Override
