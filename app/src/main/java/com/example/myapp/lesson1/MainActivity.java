@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void onClick(View view) {
-
+        /*
         switch (view.getId()) {
             case R.id.btn_counter1:
                 mPresenter.counterClick(0);
@@ -63,5 +63,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 mPresenter.counterClick(2);
                 break;
         }
+        */
     }
 }
