@@ -29,11 +29,12 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
         @Override
         public void onItemClick(IUserItemView view) {
+            int index = view.getPos();
+
             if (VERBOSE) {
-                Log.v(TAG, " onItemClick " + view.getPos());
+                Log.v(TAG, " onItemClick " + index);
             }
 
-            int index = view.getPos();
             GithubUser user = mUsers.get(index);
             mRouter.navigateTo(new Screens.LoginScreen(user));
         }
