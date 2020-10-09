@@ -23,6 +23,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
     private static final String TAG = UsersPresenter.class.getSimpleName();
     private static final boolean VERBOSE = true;
+    private static final boolean INFO = true;
 
     private GithubUserRepo mUsersRepo = new GithubUserRepo();
     private Router mRouter = GithubApplication.INSTANCE.getRouter();
@@ -71,19 +72,19 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     private void loadData() {
         mUsersRepo.getUsers().subscribe(
                 (users) -> {
-                    if (VERBOSE) {
+                    if (INFO) {
                         Log.i(TAG, "loadData.onNext " + users);
                     }
                     mUserListPresenter.mUsers.addAll(users);
                 },
                 (e) -> {
-                    if (VERBOSE) {
+                    if (INFO) {
                         Log.i(TAG, "loadData.onError " + e.getMessage());
 
                     }
                 },
                 () -> {
-                    if (VERBOSE) {
+                    if (INFO) {
                         Log.i(TAG, "loadData.onComplete");
                     }
                 }
@@ -97,14 +98,14 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "setData.onSubscribe");
                 }
             }
 
             @Override
             public void onNext(@NonNull String login) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "setData.onNext " + login);
                 }
                 view.setLogin(login);
@@ -112,14 +113,14 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "setData.onError");
                 }
             }
 
             @Override
             public void onComplete() {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "setData.onComplete");
                 }
             }

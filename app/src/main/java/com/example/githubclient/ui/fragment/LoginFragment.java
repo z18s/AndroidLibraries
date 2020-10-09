@@ -25,7 +25,7 @@ import moxy.presenter.InjectPresenter;
 public class LoginFragment extends MvpAppCompatFragment implements ILoginView, BackButtonListener {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
-    private static final boolean VERBOSE = true;
+    private static final boolean INFO = true;
 
     private View mView;
     private GithubUser user;
@@ -56,14 +56,14 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
         user.getLogin().subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "init.onSubscribe");
                 }
             }
 
             @Override
             public void onNext(@NonNull String login) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "init.onNext " + login);
                 }
                 loginTextView.setText(login);
@@ -71,14 +71,14 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
 
             @Override
             public void onError(@NonNull Throwable e) {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "init.onError");
                 }
             }
 
             @Override
             public void onComplete() {
-                if (VERBOSE) {
+                if (INFO) {
                     Log.i(TAG, "init.onComplete");
                 }
             }
