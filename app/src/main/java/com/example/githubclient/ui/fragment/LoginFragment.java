@@ -11,24 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.githubclient.R;
+import com.example.githubclient.mvp.model.Tags;
+import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.presenter.LoginPresenter;
 import com.example.githubclient.mvp.view.ILoginView;
 import com.example.githubclient.ui.BackButtonListener;
 
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 
 public class LoginFragment extends MvpAppCompatFragment implements ILoginView, BackButtonListener {
 
+    private static final String TAG = LoginFragment.class.getSimpleName();
+    private static final boolean VERBOSE = true;
+
     private View mView;
-    private String mLogin;
+    private GithubUser user;
 
     @InjectPresenter
     LoginPresenter mPresenter;
-
-    public LoginFragment(String login) {
-        mLogin = login;
-    }
 
     @Nullable
     @Override
@@ -38,9 +41,48 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
         return mView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            user = getArguments().getParcelable(Tags.USER_TAG);
+        }
+    }
+
     private void init(View view) {
         TextView loginTextView = view.findViewById(R.id.user_login);
-        loginTextView.setText(mLogin);
+
+        user.getLogin().subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                if (VERBOSE) {
+                    Log.i(TAG, "init.onSubscribe");
+                }
+            }
+
+            @Override
+            public void onNext(@NonNull String login) {
+                if (VERBOSE) {
+                    Log.i(TAG, "init.onNext " + login);
+                }
+                loginTextView.setText(login);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (VERBOSE) {
+                    Log.i(TAG, "init.onError");
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (VERBOSE) {
+                    Log.i(TAG, "init.onComplete");
+                }
+            }
+        });
     }
 
     @Override

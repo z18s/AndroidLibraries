@@ -17,7 +17,11 @@ public class GithubUserRepo {
             new GithubUser("login7")
     ));
 
-    public List<GithubUser> getUsers() {
-        return Collections.unmodifiableList(mRepositories);
+    public Observable<List<GithubUser>> getUsers() {
+        return Observable.fromArray(Collections.unmodifiableList(mRepositories));
+    }
+
+    public void setUsers(GithubUser... users) {
+        mRepositories.addAll(Arrays.asList(users));
     }
 }

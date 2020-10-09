@@ -13,6 +13,9 @@ import com.example.githubclient.navigation.Screens;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import moxy.MvpPresenter;
 import ru.terrakok.cicerone.Router;
 
@@ -42,7 +45,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         @Override
         public void bindView(IUserItemView view) {
             GithubUser user = mUsers.get(view.getPos());
-            view.setLogin(user.getLogin());
+            setData(view, user);
         }
 
         @Override
@@ -66,9 +69,61 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     }
 
     private void loadData() {
-        List<GithubUser> users = mUsersRepo.getUsers();
-        mUserListPresenter.mUsers.addAll(users);
+        mUsersRepo.getUsers().subscribe(
+                (users) -> {
+                    if (VERBOSE) {
+                        Log.i(TAG, "loadData.onNext " + users);
+                    }
+                    mUserListPresenter.mUsers.addAll(users);
+                },
+                (e) -> {
+                    if (VERBOSE) {
+                        Log.i(TAG, "loadData.onError " + e.getMessage());
+
+                    }
+                },
+                () -> {
+                    if (VERBOSE) {
+                        Log.i(TAG, "loadData.onComplete");
+                    }
+                }
+        );
+
         getViewState().updateList();
+    }
+
+    private void setData(IUserItemView view, GithubUser user) {
+        user.getLogin().subscribe(new Observer<String>() {
+
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                if (VERBOSE) {
+                    Log.i(TAG, "setData.onSubscribe");
+                }
+            }
+
+            @Override
+            public void onNext(@NonNull String login) {
+                if (VERBOSE) {
+                    Log.i(TAG, "setData.onNext " + login);
+                }
+                view.setLogin(login);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (VERBOSE) {
+                    Log.i(TAG, "setData.onError");
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (VERBOSE) {
+                    Log.i(TAG, "setData.onComplete");
+                }
+            }
+        });
     }
 
     public boolean backPressed() {

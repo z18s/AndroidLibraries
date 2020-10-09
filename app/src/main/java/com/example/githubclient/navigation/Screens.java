@@ -1,8 +1,11 @@
 package com.example.githubclient.navigation;
 
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.githubclient.mvp.model.entity.GithubUser;
+import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.ui.fragment.LoginFragment;
 import com.example.githubclient.ui.fragment.UsersFragment;
 
@@ -17,15 +20,19 @@ public class Screens {
     }
 
     public static class LoginScreen extends SupportAppScreen {
-        private String mLogin;
+        private GithubUser user;
 
         public LoginScreen(GithubUser user) {
-            mLogin = user.getLogin();
+            this.user = user;
         }
 
         @Override
         public Fragment getFragment() {
-            return new LoginFragment(mLogin);
+            LoginFragment loginFragment = new LoginFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(Tags.USER_TAG, user);
+            loginFragment.setArguments(args);
+            return loginFragment;
         }
     }
 }
