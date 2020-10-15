@@ -1,6 +1,5 @@
 package com.example.myapp.lesson4.mvp.presenter;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.myapp.lesson4.Logger;
@@ -9,7 +8,6 @@ import com.example.myapp.lesson4.mvp.view.MainView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainPresenter {
@@ -25,7 +23,6 @@ public class MainPresenter {
         if (view == null) {
             throw new IllegalArgumentException("View cannot be null");
         }
-
         this.view = view;
     }
 

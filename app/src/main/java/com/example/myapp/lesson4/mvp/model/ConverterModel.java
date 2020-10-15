@@ -62,6 +62,9 @@ public class ConverterModel {
 
     public Flowable<Bitmap> getFlowable() {
         return Flowable.just(pngPic.getBitmap()).doOnNext((bitmap) -> {
+            if (Logger.VERBOSE) {
+                Log.v(TAG, "Thread.sleep");
+            }
             Thread.sleep(5000);
             ConverterModel.this.convertImage();
         });
