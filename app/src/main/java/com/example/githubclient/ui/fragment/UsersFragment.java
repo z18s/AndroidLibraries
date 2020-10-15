@@ -10,7 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.githubclient.R;
+import com.example.myapp.lesson4.R;
+//import com.example.githubclient.R;
 import com.example.githubclient.mvp.presenter.UsersPresenter;
 import com.example.githubclient.mvp.view.IUsersView;
 import com.example.githubclient.ui.BackButtonListener;

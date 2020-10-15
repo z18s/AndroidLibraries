@@ -9,7 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.githubclient.R;
+import com.example.myapp.lesson4.R;
+//import com.example.githubclient.R;
 import com.example.githubclient.mvp.presenter.list.IUserListPresenter;
 import com.example.githubclient.mvp.view.IUserItemView;
 

@@ -10,7 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.githubclient.R;
+import com.example.myapp.lesson4.R;
+//import com.example.githubclient.R;
 import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.presenter.LoginPresenter;

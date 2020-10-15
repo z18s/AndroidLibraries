@@ -4,8 +4,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.myapp.lesson4.R;
+//import com.example.githubclient.R;
 import com.example.githubclient.GithubApplication;
-import com.example.githubclient.R;
 import com.example.githubclient.mvp.presenter.MainPresenter;
 import com.example.githubclient.mvp.view.IMainView;
 
