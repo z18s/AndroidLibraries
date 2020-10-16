@@ -9,22 +9,15 @@ import com.example.myapp.lesson4.mvp.view.MainView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import moxy.MvpPresenter;
 
-public class MainPresenter {
+public class MainPresenter extends MvpPresenter<MainView> {
 
     private final String TAG = MainPresenter.class.getSimpleName();
 
     private ConverterModel model = new ConverterModel();
-    private MainView view;
 
     private Disposable disposable;
-
-    public MainPresenter(MainView view) {
-        if (view == null) {
-            throw new IllegalArgumentException("View cannot be null");
-        }
-        this.view = view;
-    }
 
     public String getJpgPath() {
         return model.getJpgPath();
@@ -39,7 +32,7 @@ public class MainPresenter {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((bitmap) -> {
-                    view.updateConvertedImage();
+                    getViewState().updateConvertedImage();
                 });
     }
 

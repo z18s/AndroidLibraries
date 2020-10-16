@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -24,19 +23,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
+
+public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private final String TAG = MainActivity.class.getSimpleName();
     private final String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final int REQ_CODE = 11;
 
-    ImageView imageJpgView;
-    ImageView imagePngView;
-    Button chooseButton;
-    Button convertButton;
-    Button cancelButton;
+    private ImageView imageJpgView;
+    private ImageView imagePngView;
+    private Button chooseButton;
+    private Button convertButton;
+    private Button cancelButton;
 
-    private MainPresenter presenter = new MainPresenter(this);
+    @InjectPresenter
+    MainPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

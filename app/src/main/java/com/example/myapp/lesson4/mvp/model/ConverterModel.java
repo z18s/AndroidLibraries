@@ -23,6 +23,8 @@ public class ConverterModel {
 
     private boolean isComplete = false;
 
+    private final long sleep = 5000;
+
     private void convertImage() {
 
         convertToPng(pngPic);
@@ -63,9 +65,9 @@ public class ConverterModel {
     public Flowable<Bitmap> getFlowable() {
         return Flowable.just(pngPic.getBitmap()).doOnNext((bitmap) -> {
             if (Logger.VERBOSE) {
-                Log.v(TAG, "Thread.sleep");
+                Log.v(TAG, String.format("Thread.sleep - %d ms", sleep));
             }
-            Thread.sleep(5000);
+            Thread.sleep(sleep);
             ConverterModel.this.convertImage();
         });
     }
