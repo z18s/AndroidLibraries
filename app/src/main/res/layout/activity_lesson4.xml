@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/l4_btn_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose a pic" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/l4_image_jpg"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <Button
+        android:id="@+id/l4_btn_convert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Convert a pic" />
+
+    <Button
+        android:id="@+id/l4_btn_convert_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Cancel conversation" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/l4_image_png"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+</LinearLayout>
