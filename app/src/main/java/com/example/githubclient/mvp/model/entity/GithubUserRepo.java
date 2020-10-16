@@ -8,7 +8,8 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 
 public class GithubUserRepo {
-    private List<GithubUser> mRepositories = new ArrayList<>(Arrays.asList(new GithubUser("login1"),
+    private List<GithubUser> repositories = new ArrayList<>(Arrays.asList(
+            new GithubUser("login1"),
             new GithubUser("login2"),
             new GithubUser("login3"),
             new GithubUser("login4"),
@@ -18,10 +19,10 @@ public class GithubUserRepo {
     ));
 
     public Observable<List<GithubUser>> getUsers() {
-        return Observable.fromArray(Collections.unmodifiableList(mRepositories));
+        return Observable.fromArray(Collections.unmodifiableList(repositories));
     }
 
     public void setUsers(GithubUser... users) {
-        mRepositories.addAll(Arrays.asList(users));
+        repositories.addAll(Arrays.asList(users));
     }
 }

@@ -5,7 +5,10 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
+        applicationId "com.example.githubclient"
+        /*
         applicationId "com.example.myapp.lesson4"
+        */
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

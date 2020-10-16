@@ -1,8 +1,7 @@
 package com.example.githubclient.mvp.presenter;
 
-import android.util.Log;
-
 import com.example.githubclient.GithubApplication;
+import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.model.entity.GithubUserRepo;
 import com.example.githubclient.mvp.presenter.list.IUserListPresenter;
@@ -22,11 +21,9 @@ import ru.terrakok.cicerone.Router;
 public class UsersPresenter extends MvpPresenter<IUsersView> {
 
     private static final String TAG = UsersPresenter.class.getSimpleName();
-    private static final boolean VERBOSE = true;
-    private static final boolean INFO = true;
 
-    private GithubUserRepo mUsersRepo = new GithubUserRepo();
-    private Router mRouter = GithubApplication.INSTANCE.getRouter();
+    private GithubUserRepo usersRepo = new GithubUserRepo();
+    private Router router = GithubApplication.INSTANCE.getRouter();
 
     private class UsersListPresenter implements IUserListPresenter {
         private List<GithubUser> mUsers = new ArrayList<>();
@@ -35,12 +32,10 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         public void onItemClick(IUserItemView view) {
             int index = view.getPos();
 
-            if (VERBOSE) {
-                Log.v(TAG, " onItemClick " + index);
-            }
+            Logger.showLog(Logger.INFO, TAG, " onItemClick " + index);
 
             GithubUser user = mUsers.get(index);
-            mRouter.navigateTo(new Screens.LoginScreen(user));
+            router.navigateTo(new Screens.LoginScreen(user));
         }
 
         @Override
@@ -55,10 +50,10 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         }
     }
 
-    private UsersPresenter.UsersListPresenter mUserListPresenter = new UsersPresenter.UsersListPresenter();
+    private UsersPresenter.UsersListPresenter userListPresenter = new UsersPresenter.UsersListPresenter();
 
     public IUserListPresenter getPresenter() {
-        return mUserListPresenter;
+        return userListPresenter;
     }
 
     @Override
@@ -70,23 +65,16 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     }
 
     private void loadData() {
-        mUsersRepo.getUsers().subscribe(
+        usersRepo.getUsers().subscribe(
                 (users) -> {
-                    if (INFO) {
-                        Log.i(TAG, "loadData.onNext " + users);
-                    }
-                    mUserListPresenter.mUsers.addAll(users);
+                    Logger.showLog(Logger.INFO, TAG, "loadData.onNext " + users);
+                    userListPresenter.mUsers.addAll(users);
                 },
                 (e) -> {
-                    if (INFO) {
-                        Log.i(TAG, "loadData.onError " + e.getMessage());
-
-                    }
+                    Logger.showLog(Logger.INFO, TAG, "loadData.onError " + e.getMessage());
                 },
                 () -> {
-                    if (INFO) {
-                        Log.i(TAG, "loadData.onComplete");
-                    }
+                    Logger.showLog(Logger.INFO, TAG, "loadData.onComplete");
                 }
         );
 
@@ -98,37 +86,29 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                if (INFO) {
-                    Log.i(TAG, "setData.onSubscribe");
-                }
+                Logger.showLog(Logger.INFO, TAG, "setData.onSubscribe");
             }
 
             @Override
             public void onNext(@NonNull String login) {
-                if (INFO) {
-                    Log.i(TAG, "setData.onNext " + login);
-                }
+                Logger.showLog(Logger.INFO, TAG, "setData.onNext");
                 view.setLogin(login);
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                if (INFO) {
-                    Log.i(TAG, "setData.onError");
-                }
+                Logger.showLog(Logger.INFO, TAG, "setData.onError");
             }
 
             @Override
             public void onComplete() {
-                if (INFO) {
-                    Log.i(TAG, "setData.onComplete");
-                }
+                Logger.showLog(Logger.INFO, TAG, "setData.onComplete");
             }
         });
     }
 
     public boolean backPressed() {
-        mRouter.exit();
+        router.exit();
         return true;
     }
 }

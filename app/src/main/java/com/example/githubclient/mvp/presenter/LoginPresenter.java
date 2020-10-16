@@ -8,10 +8,10 @@ import ru.terrakok.cicerone.Router;
 
 public class LoginPresenter extends MvpPresenter<ILoginView> {
 
-    private Router mRouter = GithubApplication.INSTANCE.getRouter();
+    private Router router = GithubApplication.INSTANCE.getRouter();
 
     public boolean backPressed() {
-        mRouter.exit();
+        router.exit();
         return true;
     }
 }

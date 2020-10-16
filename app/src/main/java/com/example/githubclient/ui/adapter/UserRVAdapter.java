@@ -9,16 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapp.lesson4.R;
-//import com.example.githubclient.R;
+import com.example.githubclient.R;
 import com.example.githubclient.mvp.presenter.list.IUserListPresenter;
 import com.example.githubclient.mvp.view.IUserItemView;
 
 public class UserRVAdapter extends RecyclerView.Adapter<UserRVAdapter.ViewHolder> {
-    private IUserListPresenter mPresenter;
+    private IUserListPresenter presenter;
 
     public UserRVAdapter(IUserListPresenter presenter) {
-        mPresenter = presenter;
+        this.presenter = presenter;
     }
 
     @NonNull
@@ -26,30 +25,25 @@ public class UserRVAdapter extends RecyclerView.Adapter<UserRVAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View userView = inflater.inflate(R.layout.item_user, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(userView);
-
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.position = position;
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.onItemClick(holder);
-            }
+
+        holder.itemView.setOnClickListener((view) -> {
+            presenter.onItemClick(holder);
         });
 
-        mPresenter.bindView(holder);
+        presenter.bindView(holder);
     }
 
     @Override
     public int getItemCount() {
-        return mPresenter.getCount();
+        return presenter.getCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements IUserItemView {

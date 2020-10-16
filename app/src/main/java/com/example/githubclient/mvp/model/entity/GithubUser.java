@@ -6,18 +6,18 @@ import android.os.Parcelable;
 import io.reactivex.rxjava3.core.Observable;
 
 public class GithubUser implements Parcelable {
-    private String mLogin;
+    private String login;
 
     public GithubUser(String login) {
-        mLogin = login;
+        this.login = login;
     }
 
     protected GithubUser(Parcel in) {
-        mLogin = in.readString();
+        login = in.readString();
     }
 
     public Observable<String> getLogin() {
-        return Observable.just(mLogin);
+        return Observable.just(login);
     }
 
     public static final Creator<GithubUser> CREATOR = new Creator<GithubUser>() {
@@ -39,6 +39,6 @@ public class GithubUser implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mLogin);
+        parcel.writeString(login);
     }
 }

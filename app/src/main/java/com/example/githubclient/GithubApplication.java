@@ -9,7 +9,7 @@ import ru.terrakok.cicerone.Router;
 
 public class GithubApplication extends Application {
     public static GithubApplication INSTANCE;
-    private Cicerone<Router> mCicerone;
+    private Cicerone<Router> cicerone;
 
     @Override
     public void onCreate() {
@@ -24,15 +24,14 @@ public class GithubApplication extends Application {
     }
 
     private void initCicerone() {
-        mCicerone = Cicerone.create();
+        cicerone = Cicerone.create();
     }
 
     public NavigatorHolder getNavigatorHolder() {
-        return mCicerone.getNavigatorHolder();
+        return cicerone.getNavigatorHolder();
     }
 
     public Router getRouter() {
-        return mCicerone.getRouter();
+        return cicerone.getRouter();
     }
-
 }
