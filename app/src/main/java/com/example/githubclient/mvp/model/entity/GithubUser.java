@@ -3,10 +3,19 @@ package com.example.githubclient.mvp.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+
 import io.reactivex.rxjava3.core.Observable;
 
 public class GithubUser implements Parcelable {
-    private String login;
+    @Expose
+    String id;
+    @Expose
+    String login;
+    @Expose
+    String avatarUrl;
+    @Expose
+    String reposUrl;
 
     public GithubUser(String login) {
         this.login = login;
@@ -18,6 +27,10 @@ public class GithubUser implements Parcelable {
 
     public Observable<String> getLogin() {
         return Observable.just(login);
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
     public static final Creator<GithubUser> CREATOR = new Creator<GithubUser>() {

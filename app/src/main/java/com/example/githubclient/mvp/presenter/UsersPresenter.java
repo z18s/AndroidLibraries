@@ -1,9 +1,10 @@
 package com.example.githubclient.mvp.presenter;
 
-import com.example.githubclient.GithubApplication;
+import androidx.annotation.UiThread;
+
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.entity.GithubUser;
-import com.example.githubclient.mvp.model.entity.GithubUserRepo;
+import com.example.githubclient.mvp.model.repo.IGithubUsersRepo;
 import com.example.githubclient.mvp.presenter.list.IUserListPresenter;
 import com.example.githubclient.mvp.view.IUserItemView;
 import com.example.githubclient.mvp.view.IUsersView;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import moxy.MvpPresenter;
 import ru.terrakok.cicerone.Router;
@@ -22,11 +24,18 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
     private static final String TAG = UsersPresenter.class.getSimpleName();
 
-    private GithubUserRepo usersRepo = new GithubUserRepo();
-    private Router router = GithubApplication.INSTANCE.getRouter();
+    private final IGithubUsersRepo USERS_REPO;
+    private final Router ROUTER;
+    private final Scheduler SCHEDULER;
+
+    public UsersPresenter(Scheduler scheduler, IGithubUsersRepo usersRepo, Router router) {
+        SCHEDULER = scheduler;
+        USERS_REPO = usersRepo;
+        ROUTER = router;
+    }
 
     private class UsersListPresenter implements IUserListPresenter {
-        private List<GithubUser> mUsers = new ArrayList<>();
+        private List<GithubUser> users = new ArrayList<>();
 
         @Override
         public void onItemClick(IUserItemView view) {
@@ -34,19 +43,19 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             Logger.showLog(Logger.INFO, TAG, " onItemClick " + index);
 
-            GithubUser user = mUsers.get(index);
-            router.navigateTo(new Screens.LoginScreen(user));
+            GithubUser user = users.get(index);
+            ROUTER.navigateTo(new Screens.LoginScreen(user));
         }
 
         @Override
         public void bindView(IUserItemView view) {
-            GithubUser user = mUsers.get(view.getPos());
+            GithubUser user = users.get(view.getPos());
             setData(view, user);
         }
 
         @Override
         public int getCount() {
-            return mUsers.size();
+            return users.size();
         }
     }
 
@@ -64,17 +73,17 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         loadData();
     }
 
+    @UiThread
     private void loadData() {
-        usersRepo.getUsers().subscribe(
+        USERS_REPO.getUsers().observeOn(SCHEDULER).subscribe(
                 (users) -> {
                     Logger.showLog(Logger.INFO, TAG, "loadData.onNext " + users);
-                    userListPresenter.mUsers.addAll(users);
+                    userListPresenter.users.clear();
+                    userListPresenter.users.addAll(users);
+                    getViewState().updateList();
                 },
                 (e) -> {
                     Logger.showLog(Logger.INFO, TAG, "loadData.onError " + e.getMessage());
-                },
-                () -> {
-                    Logger.showLog(Logger.INFO, TAG, "loadData.onComplete");
                 }
         );
 
@@ -93,6 +102,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
             public void onNext(@NonNull String login) {
                 Logger.showLog(Logger.INFO, TAG, "setData.onNext");
                 view.setLogin(login);
+                view.loadAvatar(user.getAvatarUrl());
             }
 
             @Override
@@ -108,7 +118,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     }
 
     public boolean backPressed() {
-        router.exit();
+        ROUTER.exit();
         return true;
     }
 }
