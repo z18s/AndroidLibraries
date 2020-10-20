@@ -35,7 +35,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     }
 
     private class UsersListPresenter implements IUserListPresenter {
-        private List<GithubUser> users = new ArrayList<>();
+        private final List<GithubUser> users = new ArrayList<>();
 
         @Override
         public void onItemClick(IUserItemView view) {
@@ -59,7 +59,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         }
     }
 
-    private UsersPresenter.UsersListPresenter userListPresenter = new UsersPresenter.UsersListPresenter();
+    private final UsersPresenter.UsersListPresenter userListPresenter = new UsersPresenter.UsersListPresenter();
 
     public IUserListPresenter getPresenter() {
         return userListPresenter;
@@ -95,12 +95,10 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                Logger.showLog(Logger.INFO, TAG, "setData.onSubscribe");
             }
 
             @Override
             public void onNext(@NonNull String login) {
-                Logger.showLog(Logger.INFO, TAG, "setData.onNext");
                 view.setLogin(login);
                 view.loadAvatar(user.getAvatarUrl());
             }

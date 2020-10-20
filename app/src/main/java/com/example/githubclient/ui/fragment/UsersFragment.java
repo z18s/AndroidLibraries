@@ -29,7 +29,6 @@ public class UsersFragment extends MvpAppCompatFragment implements IUsersView, B
 
     private RecyclerView recyclerView;
     private UserRVAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private View view;
 
@@ -40,7 +39,6 @@ public class UsersFragment extends MvpAppCompatFragment implements IUsersView, B
     UsersPresenter provideUsersPresenter() {
         IGithubUsersRepo usersRepo = new RetrofitGithubUsersRepo((GithubApplication.INSTANCE).getApi());
         Router router = GithubApplication.INSTANCE.getRouter();
-
         return new UsersPresenter(AndroidSchedulers.mainThread(), usersRepo, router);
     }
 
@@ -54,7 +52,7 @@ public class UsersFragment extends MvpAppCompatFragment implements IUsersView, B
 
     @Override
     public void init() {
-        layoutManager = new LinearLayoutManager(view.getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         adapter = new UserRVAdapter(presenter.getPresenter());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

@@ -8,20 +8,20 @@ import ru.terrakok.cicerone.Router;
 
 public class MainPresenter extends MvpPresenter<IMainView> {
 
-    private Router router;// = GithubApplication.INSTANCE.getRouter();
+    private final Router ROUTER;
 
     public MainPresenter(Router router) {
         super();
-        this.router = router;
+        ROUTER = router;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        router.replaceScreen(new Screens.UsersScreen());
+        ROUTER.replaceScreen(new Screens.UsersScreen());
     }
 
     public void backClicked() {
-        router.exit();
+        ROUTER.exit();
     }
 }

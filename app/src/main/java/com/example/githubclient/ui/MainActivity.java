@@ -4,8 +4,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.githubclient.R;
 import com.example.githubclient.GithubApplication;
+import com.example.githubclient.Logger;
+import com.example.githubclient.R;
 import com.example.githubclient.mvp.presenter.MainPresenter;
 import com.example.githubclient.mvp.view.IMainView;
 
@@ -19,8 +20,10 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private NavigatorHolder navigatorHolder = GithubApplication.INSTANCE.getNavigatorHolder();
-    Navigator navigator = new SupportAppNavigator(this, getSupportFragmentManager(), R.id.container);
+    private Navigator navigator = new SupportAppNavigator(this, getSupportFragmentManager(), R.id.container);
 
     @InjectPresenter
     MainPresenter presenter;
@@ -51,10 +54,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
 
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            Logger.showLog(Logger.INFO, TAG, "onBackPressed.fragment - " + fragment);
             if (fragment instanceof BackButtonListener && ((BackButtonListener) fragment).backPressed()) {
+                Logger.showLog(Logger.INFO, TAG, "onBackPressed - return");
                 return;
             }
         }
