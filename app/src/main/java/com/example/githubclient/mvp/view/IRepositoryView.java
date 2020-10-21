@@ -4,7 +4,6 @@ import moxy.MvpView;
 import moxy.viewstate.strategy.alias.AddToEndSingle;
 
 @AddToEndSingle
-public interface ILoginView extends MvpView {
+public interface IRepositoryView extends MvpView {
     void init();
-    void updateList();
 }
