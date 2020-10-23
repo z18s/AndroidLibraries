@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import io.reactivex.rxjava3.core.Observable;
 
 public class GithubRepository implements Parcelable {
+
     @Expose
     String name;
     @Expose

@@ -18,8 +18,8 @@ import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.model.repo.IGithubRepositoriesRepo;
 import com.example.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo;
-import com.example.githubclient.mvp.presenter.LoginPresenter;
-import com.example.githubclient.mvp.view.ILoginView;
+import com.example.githubclient.mvp.presenter.UserPresenter;
+import com.example.githubclient.mvp.view.IUserView;
 import com.example.githubclient.ui.BackButtonListener;
 import com.example.githubclient.ui.adapter.RepositoryRVAdapter;
 
@@ -31,9 +31,9 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.terrakok.cicerone.Router;
 
-public class LoginFragment extends MvpAppCompatFragment implements ILoginView, BackButtonListener {
+public class UserFragment extends MvpAppCompatFragment implements IUserView, BackButtonListener {
 
-    private static final String TAG = LoginFragment.class.getSimpleName();
+    private static final String TAG = UserFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
     private RepositoryRVAdapter adapter;
@@ -42,21 +42,21 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
     private GithubUser user;
 
     @InjectPresenter
-    LoginPresenter presenter;
+    UserPresenter presenter;
 
     @ProvidePresenter
-    LoginPresenter provideLoginPresenter() {
+    UserPresenter provideLoginPresenter() {
         IGithubRepositoriesRepo repositoriesRepo = new RetrofitGithubRepositoriesRepo((GithubApplication.INSTANCE).getApi());
         Router router = GithubApplication.INSTANCE.getRouter();
         user = getGithubUser();
-        return new LoginPresenter(AndroidSchedulers.mainThread(), repositoriesRepo, router, user);
+        return new UserPresenter(AndroidSchedulers.mainThread(), repositoriesRepo, router, user);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_repos);
+        view = inflater.inflate(R.layout.fragment_user, container, false);
+        recyclerView = view.findViewById(R.id.rv_repositories);
         return view;
     }
 
@@ -75,7 +75,7 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
 
     @Override
     public void init() {
-        TextView loginTextView = view.findViewById(R.id.user_login);
+        TextView userLoginTextView = view.findViewById(R.id.user_login);
 
         user.getLogin().subscribe(new Observer<String>() {
             @Override
@@ -86,7 +86,7 @@ public class LoginFragment extends MvpAppCompatFragment implements ILoginView, B
             @Override
             public void onNext(@NonNull String login) {
                 Logger.showLog(Logger.INFO, TAG, "init.onNext " + login);
-                loginTextView.setText(login);
+                userLoginTextView.setText(login);
             }
 
             @Override

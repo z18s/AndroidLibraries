@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RetrofitGithubRepositoriesRepo implements IGithubRepositoriesRepo {
-    IDataSource api;
+    final IDataSource api;
 
     public RetrofitGithubRepositoriesRepo(IDataSource api) {
         this.api = api;

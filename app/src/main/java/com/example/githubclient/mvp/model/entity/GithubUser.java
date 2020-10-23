@@ -8,6 +8,9 @@ import com.google.gson.annotations.Expose;
 import io.reactivex.rxjava3.core.Observable;
 
 public class GithubUser implements Parcelable {
+
+    @Expose
+    int id;
     @Expose
     String login;
     @Expose
@@ -15,22 +18,18 @@ public class GithubUser implements Parcelable {
     @Expose
     String reposUrl;
 
+    public GithubUser(int id, String login, String avatarUrl, String reposUrl) {
+        this.id = id;
+        this.login = login;
+        this.avatarUrl = avatarUrl;
+        this.reposUrl = reposUrl;
+    }
+
     protected GithubUser(Parcel in) {
+        id = in.readInt();
         login = in.readString();
         avatarUrl = in.readString();
         reposUrl = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(login);
-        dest.writeString(avatarUrl);
-        dest.writeString(reposUrl);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<GithubUser> CREATOR = new Creator<GithubUser>() {
@@ -45,8 +44,29 @@ public class GithubUser implements Parcelable {
         }
     };
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(login);
+        parcel.writeString(avatarUrl);
+        parcel.writeString(reposUrl);
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public Observable<String> getLogin() {
         return Observable.just(login);
+    }
+
+    public String getLoginString() {
+        return login;
     }
 
     public String getAvatarUrl() {

@@ -14,7 +14,7 @@ import com.example.githubclient.mvp.presenter.list.IRepositoryListPresenter;
 import com.example.githubclient.mvp.view.IRepositoryItemView;
 
 public class RepositoryRVAdapter extends RecyclerView.Adapter<RepositoryRVAdapter.ViewHolder> {
-    private IRepositoryListPresenter presenter;
+    private final IRepositoryListPresenter presenter;
 
     public RepositoryRVAdapter(IRepositoryListPresenter presenter) {
         this.presenter = presenter;
@@ -26,8 +26,7 @@ public class RepositoryRVAdapter extends RecyclerView.Adapter<RepositoryRVAdapte
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View repoView = inflater.inflate(R.layout.item_repo, parent, false);
-        RepositoryRVAdapter.ViewHolder viewHolder = new RepositoryRVAdapter.ViewHolder(repoView);
-        return viewHolder;
+        return new ViewHolder(repoView);
     }
 
     @Override

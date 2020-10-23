@@ -7,8 +7,8 @@ import com.example.githubclient.mvp.model.entity.GithubRepository;
 import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.model.repo.IGithubRepositoriesRepo;
 import com.example.githubclient.mvp.presenter.list.IRepositoryListPresenter;
-import com.example.githubclient.mvp.view.ILoginView;
 import com.example.githubclient.mvp.view.IRepositoryItemView;
+import com.example.githubclient.mvp.view.IUserView;
 import com.example.githubclient.navigation.Screens;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import moxy.MvpPresenter;
 import ru.terrakok.cicerone.Router;
 
-public class LoginPresenter extends MvpPresenter<ILoginView> {
+public class UserPresenter extends MvpPresenter<IUserView> {
 
-    private static final String TAG = LoginPresenter.class.getSimpleName();
+    private static final String TAG = UserPresenter.class.getSimpleName();
 
     private final IGithubRepositoriesRepo REPOSITORIES_REPO;
     private final Router ROUTER;
@@ -31,7 +31,7 @@ public class LoginPresenter extends MvpPresenter<ILoginView> {
 
     private final GithubUser USER;
 
-    public LoginPresenter(Scheduler scheduler, IGithubRepositoriesRepo repositoriesRepo, Router router, GithubUser user) {
+    public UserPresenter(Scheduler scheduler, IGithubRepositoriesRepo repositoriesRepo, Router router, GithubUser user) {
         SCHEDULER = scheduler;
         REPOSITORIES_REPO = repositoriesRepo;
         ROUTER = router;
@@ -63,7 +63,7 @@ public class LoginPresenter extends MvpPresenter<ILoginView> {
         }
     }
 
-    private final LoginPresenter.RepositoriesListPresenter repositoryListPresenter = new LoginPresenter.RepositoriesListPresenter();
+    private final UserPresenter.RepositoriesListPresenter repositoryListPresenter = new UserPresenter.RepositoriesListPresenter();
 
     public IRepositoryListPresenter getPresenter() {
         return repositoryListPresenter;

@@ -44,7 +44,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
             Logger.showLog(Logger.INFO, TAG, " onItemClick " + index);
 
             GithubUser user = users.get(index);
-            ROUTER.navigateTo(new Screens.LoginScreen(user));
+            ROUTER.navigateTo(new Screens.UserScreen(user));
         }
 
         @Override

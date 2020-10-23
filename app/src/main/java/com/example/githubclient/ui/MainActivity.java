@@ -22,8 +22,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private NavigatorHolder navigatorHolder = GithubApplication.INSTANCE.getNavigatorHolder();
-    private Navigator navigator = new SupportAppNavigator(this, getSupportFragmentManager(), R.id.container);
+    private final NavigatorHolder navigatorHolder = GithubApplication.INSTANCE.getNavigatorHolder();
+    private final Navigator navigator = new SupportAppNavigator(this, getSupportFragmentManager(), R.id.container);
 
     @InjectPresenter
     MainPresenter presenter;
@@ -54,8 +54,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             Logger.showLog(Logger.INFO, TAG, "onBackPressed.fragment - " + fragment);
             if (fragment instanceof BackButtonListener && ((BackButtonListener) fragment).backPressed()) {
@@ -63,7 +61,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 return;
             }
         }
-
         presenter.backClicked();
     }
 }
