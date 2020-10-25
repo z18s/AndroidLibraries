@@ -10,19 +10,33 @@ import io.reactivex.rxjava3.core.Observable;
 public class GithubRepository implements Parcelable {
 
     @Expose
+    String id;
+    @Expose
     String name;
     @Expose
     String language;
+    @Expose
+    String userId;
+
+    public GithubRepository(String id, String name, String language) {
+        this.id = id;
+        this.name = name;
+        this.language = language;
+    }
 
     protected GithubRepository(Parcel in) {
+        id = in.readString();
         name = in.readString();
         language = in.readString();
+        userId = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(language);
+        dest.writeString(userId);
     }
 
     @Override
@@ -42,8 +56,16 @@ public class GithubRepository implements Parcelable {
         }
     };
 
+    public String getId() {
+        return id;
+    }
+
     public Observable<String> getName() {
         return Observable.just(name);
+    }
+
+    public String getNameString() {
+        return name;
     }
 
     public String getLanguage() {

@@ -18,9 +18,9 @@ public class RetrofitGithubUsersRepo implements IGithubUsersRepo {
     final INetworkStatus networkStatus;
     final Database db;
 
-    public RetrofitGithubUsersRepo(IDataSource api, INetworkStatus status, Database db) {
+    public RetrofitGithubUsersRepo(IDataSource api, INetworkStatus networkStatus, Database db) {
         this.api = api;
-        this.networkStatus = status;
+        this.networkStatus = networkStatus;
         this.db = db;
     }
 
@@ -31,15 +31,14 @@ public class RetrofitGithubUsersRepo implements IGithubUsersRepo {
                 return api.getUsers().flatMap((users) ->
                         Single.fromCallable(() -> {
                             List<RoomGithubUser> roomGithubUsers = new ArrayList<>();
-
                             for (GithubUser user : users) {
-                                RoomGithubUser roomUser = new RoomGithubUser(
+                                RoomGithubUser roomGithubUser = new RoomGithubUser(
                                         user.getId(),
                                         user.getLoginString(),
                                         user.getAvatarUrl(),
                                         user.getRepositoriesUrl()
                                 );
-                                roomGithubUsers.add(roomUser);
+                                roomGithubUsers.add(roomGithubUser);
                             }
                             db.userDao().insert(roomGithubUsers);
                             return users;

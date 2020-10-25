@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey;
 public class RoomGithubRepository {
 
     @PrimaryKey @NonNull
-    public int id;
+    public String id;
     @ColumnInfo(name = "name")
     public String name;
     @ColumnInfo(name = "language")
@@ -22,7 +22,7 @@ public class RoomGithubRepository {
     @ColumnInfo(name = "user_id")
     public String userId;
 
-    public RoomGithubRepository(@NonNull int id, String name, String language, String userId) {
+    public RoomGithubRepository(@NonNull String id, String name, String language, String userId) {
         this.id = id;
         this.name = name;
         this.language = language;
@@ -30,7 +30,7 @@ public class RoomGithubRepository {
     }
 
     @NonNull
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -40,9 +40,5 @@ public class RoomGithubRepository {
 
     public String getLanguage() {
         return language;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }

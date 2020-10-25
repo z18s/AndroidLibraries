@@ -16,12 +16,14 @@ import com.example.githubclient.Logger;
 import com.example.githubclient.R;
 import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubUser;
+import com.example.githubclient.mvp.model.entity.room.Database;
 import com.example.githubclient.mvp.model.repo.IGithubRepositoriesRepo;
 import com.example.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo;
 import com.example.githubclient.mvp.presenter.UserPresenter;
 import com.example.githubclient.mvp.view.IUserView;
 import com.example.githubclient.ui.BackButtonListener;
 import com.example.githubclient.ui.adapter.RepositoryRVAdapter;
+import com.example.githubclient.ui.network.AndroidNetworkStatus;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
@@ -39,17 +41,17 @@ public class UserFragment extends MvpAppCompatFragment implements IUserView, Bac
     private RepositoryRVAdapter adapter;
 
     private View view;
-    private GithubUser user;
 
     @InjectPresenter
     UserPresenter presenter;
 
     @ProvidePresenter
     UserPresenter provideLoginPresenter() {
-        IGithubRepositoriesRepo repositoriesRepo = new RetrofitGithubRepositoriesRepo((GithubApplication.INSTANCE).getApi());
+        IGithubRepositoriesRepo repositoriesRepo = new RetrofitGithubRepositoriesRepo((GithubApplication.INSTANCE).getApi(),
+                new AndroidNetworkStatus(),
+                Database.getInstance());
         Router router = GithubApplication.INSTANCE.getRouter();
-        user = getGithubUser();
-        return new UserPresenter(AndroidSchedulers.mainThread(), repositoriesRepo, router, user);
+        return new UserPresenter(AndroidSchedulers.mainThread(), repositoriesRepo, router, getGithubUser());
     }
 
     @Nullable
@@ -63,21 +65,18 @@ public class UserFragment extends MvpAppCompatFragment implements IUserView, Bac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        user = getGithubUser();
     }
 
     private GithubUser getGithubUser() {
-        if (getArguments() != null) {
-            return getArguments().getParcelable(Tags.USER_TAG);
-        }
-        return null;
+        return ((getArguments() != null) ? getArguments().getParcelable(Tags.USER_TAG) : null);
     }
 
     @Override
     public void init() {
         TextView userLoginTextView = view.findViewById(R.id.user_login);
+        GithubUser githubUser = getGithubUser();
 
-        user.getLogin().subscribe(new Observer<String>() {
+        githubUser.getLogin().subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 Logger.showLog(Logger.INFO, TAG, "init.onSubscribe");

@@ -27,7 +27,6 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
     private static final String TAG = RepositoryFragment.class.getSimpleName();
 
     private View view;
-    private GithubRepository repository;
 
     @InjectPresenter
     RepositoryPresenter presenter;
@@ -42,14 +41,10 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        repository = getGithubRepository();
     }
 
     private GithubRepository getGithubRepository() {
-        if (getArguments() != null) {
-            return getArguments().getParcelable(Tags.REPOSITORY_TAG);
-        }
-        return null;
+        return ((getArguments() != null) ? getArguments().getParcelable(Tags.REPOSITORY_TAG) : null);
     }
 
     @Override
@@ -57,6 +52,7 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
         TextView repositoryNameTextView = view.findViewById(R.id.repository_name);
         TextView repositoryLanguageTextView = view.findViewById(R.id.repository_language);
         String title = getResources().getString(R.string.language_title);
+        GithubRepository repository = getGithubRepository();
 
         repository.getName().subscribe(new Observer<String>() {
             @Override

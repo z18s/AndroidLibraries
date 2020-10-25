@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 public class RoomGithubUser {
 
     @PrimaryKey @NonNull
-    public int id;
+    public String id;
     @ColumnInfo(name = "login")
     public String login;
     @ColumnInfo(name = "avatar_url")
@@ -17,7 +17,7 @@ public class RoomGithubUser {
     @ColumnInfo(name = "repositories_url")
     public String reposUrl;
 
-    public RoomGithubUser(@NonNull int id, String login, String avatarUrl, String reposUrl) {
+    public RoomGithubUser(@NonNull String id, String login, String avatarUrl, String reposUrl) {
         this.id = id;
         this.login = login;
         this.avatarUrl = avatarUrl;
@@ -25,7 +25,7 @@ public class RoomGithubUser {
     }
 
     @NonNull
-    public int getId() {
+    public String getId() {
         return id;
     }
 

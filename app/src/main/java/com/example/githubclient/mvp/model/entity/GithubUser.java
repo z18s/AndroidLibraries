@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Observable;
 public class GithubUser implements Parcelable {
 
     @Expose
-    int id;
+    String id;
     @Expose
     String login;
     @Expose
@@ -18,7 +18,7 @@ public class GithubUser implements Parcelable {
     @Expose
     String reposUrl;
 
-    public GithubUser(int id, String login, String avatarUrl, String reposUrl) {
+    public GithubUser(String id, String login, String avatarUrl, String reposUrl) {
         this.id = id;
         this.login = login;
         this.avatarUrl = avatarUrl;
@@ -26,7 +26,7 @@ public class GithubUser implements Parcelable {
     }
 
     protected GithubUser(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         login = in.readString();
         avatarUrl = in.readString();
         reposUrl = in.readString();
@@ -51,13 +51,13 @@ public class GithubUser implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeString(id);
         parcel.writeString(login);
         parcel.writeString(avatarUrl);
         parcel.writeString(reposUrl);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

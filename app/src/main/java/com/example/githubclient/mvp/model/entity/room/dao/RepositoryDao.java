@@ -17,19 +17,19 @@ public interface RepositoryDao {
     void insert(RoomGithubRepository repository);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<RoomGithubRepository> repository);
+    void insert(List<RoomGithubRepository> repositories);
 
     @Update
     void update(RoomGithubRepository repository);
 
     @Update
-    void update(List<RoomGithubRepository> repository);
+    void update(List<RoomGithubRepository> repositories);
 
     @Delete
     void delete(RoomGithubRepository repository);
 
     @Delete
-    void delete(List<RoomGithubRepository> repository);
+    void delete(List<RoomGithubRepository> repositories);
 
 
     @Query("SELECT * FROM RoomGithubRepository")

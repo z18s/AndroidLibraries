@@ -79,7 +79,7 @@ public class UserPresenter extends MvpPresenter<IUserView> {
 
     @UiThread
     private void loadData() {
-        REPOSITORIES_REPO.getRepositories(USER.getRepositoriesUrl()).observeOn(SCHEDULER).subscribe(
+        REPOSITORIES_REPO.getRepositories(USER).observeOn(SCHEDULER).subscribe(
                 (repositories) -> {
                     Logger.showLog(Logger.INFO, TAG, "loadData.onNext " + repositories);
                     repositoryListPresenter.repositories.clear();
