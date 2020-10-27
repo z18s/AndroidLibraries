@@ -65,8 +65,7 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
 
     @Override
     public void setLanguage(String language) {
-        String title = getResources().getString(R.string.language_title);
-        repositoryLanguageTextView.setText(title + language);
+        repositoryLanguageTextView.setText(String.format("%s %s", getResources().getString(R.string.language_title), language));
     }
 
     @Override
