@@ -6,10 +6,10 @@ import com.example.githubclient.di.module.CacheModule;
 import com.example.githubclient.di.module.CiceroneModule;
 import com.example.githubclient.di.module.RepoModule;
 import com.example.githubclient.mvp.presenter.MainPresenter;
+import com.example.githubclient.mvp.presenter.RepositoryPresenter;
 import com.example.githubclient.mvp.presenter.UserPresenter;
 import com.example.githubclient.mvp.presenter.UsersPresenter;
 import com.example.githubclient.ui.MainActivity;
-import com.example.githubclient.ui.fragment.RepositoryFragment;
 
 import javax.inject.Singleton;
 
@@ -24,12 +24,9 @@ import dagger.Component;
                 RepoModule.class
 })
 public interface AppComponent {
-
     void inject(MainActivity mainActivity);
     void inject(MainPresenter mainPresenter);
     void inject(UsersPresenter usersPresenter);
     void inject(UserPresenter userPresenter);
-
-    // ДЗ это убрать
-    void inject(RepositoryFragment fragment);
+    void inject(RepositoryPresenter repositoryPresenter);
 }

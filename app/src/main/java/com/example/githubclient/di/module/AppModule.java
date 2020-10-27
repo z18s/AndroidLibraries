@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Scheduler;
 
 @Module
 public class AppModule {
+
     private GithubApplication app;
 
     public AppModule(GithubApplication app) {

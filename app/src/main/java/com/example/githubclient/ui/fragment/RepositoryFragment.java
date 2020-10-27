@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.githubclient.GithubApplication;
 import com.example.githubclient.R;
 import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubRepository;
@@ -17,12 +16,9 @@ import com.example.githubclient.mvp.presenter.RepositoryPresenter;
 import com.example.githubclient.mvp.view.IRepositoryView;
 import com.example.githubclient.ui.BackButtonListener;
 
-import javax.inject.Inject;
-
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
-import ru.terrakok.cicerone.Router;
 
 public class RepositoryFragment extends MvpAppCompatFragment implements IRepositoryView, BackButtonListener {
 
@@ -35,12 +31,9 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
     @InjectPresenter
     RepositoryPresenter presenter;
 
-    @Inject
-    Router router;
-
     @ProvidePresenter
     RepositoryPresenter provideRepositoryPresenter() {
-        return new RepositoryPresenter(router, getGithubRepository());
+        return new RepositoryPresenter(getGithubRepository());
     }
 
     @Nullable
@@ -53,7 +46,6 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     private GithubRepository getGithubRepository() {

@@ -16,6 +16,7 @@ import dagger.Provides;
 
 @Module
 public class RepoModule {
+
     @Singleton
     @Provides
     public IGithubUsersRepo usersRepo(IDataSource api, INetworkStatus status, IGithubUsersCache cache) {
