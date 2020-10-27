@@ -2,9 +2,12 @@ package com.example.githubclient.mvp.presenter;
 
 import androidx.annotation.NonNull;
 
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.entity.GithubRepository;
 import com.example.githubclient.mvp.view.IRepositoryView;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -15,12 +18,14 @@ public class RepositoryPresenter extends MvpPresenter<IRepositoryView> {
 
     private static final String TAG = RepositoryPresenter.class.getSimpleName();
 
-    private final Router router;
+    @Inject
+    Router router;
+
     private final GithubRepository repository;
 
-    public RepositoryPresenter(Router router, GithubRepository repository) {
-        this.router = router;
+    public RepositoryPresenter(GithubRepository repository) {
         this.repository = repository;
+        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     @Override

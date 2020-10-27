@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class ApiModule {
+
     @Named("baseUrl")
     @Provides
     String baseUrl() {

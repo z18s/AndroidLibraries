@@ -24,6 +24,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     @Inject
     NavigatorHolder navigatorHolder;
+
     private final Navigator navigator = new SupportAppNavigator(this, getSupportFragmentManager(), R.id.container);
 
     @InjectPresenter
