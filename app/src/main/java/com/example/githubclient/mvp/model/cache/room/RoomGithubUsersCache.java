@@ -15,7 +15,7 @@ public class RoomGithubUsersCache implements IGithubUsersCache {
 
     private static final String TAG = RoomGithubUsersCache.class.getSimpleName();
 
-    final Database db;
+    private final Database db;
 
     public RoomGithubUsersCache(Database db) {
         this.db = db;

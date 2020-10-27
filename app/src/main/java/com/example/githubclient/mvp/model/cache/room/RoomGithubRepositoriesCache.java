@@ -17,7 +17,7 @@ public class RoomGithubRepositoriesCache implements IGithubRepositoriesCache {
 
     private static final String TAG = RoomGithubRepositoriesCache.class.getSimpleName();
 
-    final Database db;
+    private final Database db;
 
     public RoomGithubRepositoriesCache(Database db) {
         this.db = db;

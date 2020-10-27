@@ -10,22 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.githubclient.GithubApplication;
 import com.example.githubclient.R;
-import com.example.githubclient.mvp.model.entity.room.Database;
-import com.example.githubclient.mvp.model.repo.IGithubUsersRepo;
-import com.example.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo;
 import com.example.githubclient.mvp.presenter.UsersPresenter;
 import com.example.githubclient.mvp.view.IUsersView;
 import com.example.githubclient.ui.BackButtonListener;
 import com.example.githubclient.ui.adapter.UserRVAdapter;
-import com.example.githubclient.ui.network.AndroidNetworkStatus;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
-import moxy.presenter.ProvidePresenter;
-import ru.terrakok.cicerone.Router;
 
 public class UsersFragment extends MvpAppCompatFragment implements IUsersView, BackButtonListener {
 
@@ -36,15 +28,6 @@ public class UsersFragment extends MvpAppCompatFragment implements IUsersView, B
 
     @InjectPresenter
     UsersPresenter presenter;
-
-    @ProvidePresenter
-    UsersPresenter provideUsersPresenter() {
-        IGithubUsersRepo usersRepo = new RetrofitGithubUsersRepo((GithubApplication.INSTANCE).getApi(),
-                new AndroidNetworkStatus(),
-                Database.getInstance());
-        Router router = GithubApplication.INSTANCE.getRouter();
-        return new UsersPresenter(AndroidSchedulers.mainThread(), usersRepo, router);
-    }
 
     @Nullable
     @Override

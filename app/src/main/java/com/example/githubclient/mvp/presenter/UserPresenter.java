@@ -2,6 +2,7 @@ package com.example.githubclient.mvp.presenter;
 
 import androidx.annotation.UiThread;
 
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.entity.GithubRepository;
 import com.example.githubclient.mvp.model.entity.GithubUser;
@@ -14,6 +15,8 @@ import com.example.githubclient.navigation.Screens;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
@@ -25,17 +28,18 @@ public class UserPresenter extends MvpPresenter<IUserView> {
 
     private static final String TAG = UserPresenter.class.getSimpleName();
 
-    private final IGithubRepositoriesRepo REPOSITORIES_REPO;
-    private final Router ROUTER;
-    private final Scheduler SCHEDULER;
+    @Inject
+    IGithubRepositoriesRepo repositoriesRepo;
+    @Inject
+    Router router;
+    @Inject
+    Scheduler scheduler;
 
-    private final GithubUser USER;
+    private final GithubUser user;
 
-    public UserPresenter(Scheduler scheduler, IGithubRepositoriesRepo repositoriesRepo, Router router, GithubUser user) {
-        SCHEDULER = scheduler;
-        REPOSITORIES_REPO = repositoriesRepo;
-        ROUTER = router;
-        USER = user;
+    public UserPresenter(GithubUser user) {
+        this.user = user;
+        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     private class RepositoriesListPresenter implements IRepositoryListPresenter {
@@ -45,16 +49,16 @@ public class UserPresenter extends MvpPresenter<IUserView> {
         public void onItemClick(IRepositoryItemView view) {
             int index = view.getPos();
 
-            Logger.showLog(Logger.INFO, TAG, " onItemClick " + index);
+            Logger.showLog(Logger.INFO, TAG, "onItemClick " + index);
 
             GithubRepository repository = repositories.get(index);
-            ROUTER.navigateTo(new Screens.RepositoryScreen(repository));
+            router.navigateTo(new Screens.RepositoryScreen(repository));
         }
 
         @Override
         public void bindView(IRepositoryItemView view) {
             GithubRepository repository = repositories.get(view.getPos());
-            setData(view, repository);
+            setRecyclerData(view, repository);
         }
 
         @Override
@@ -74,29 +78,49 @@ public class UserPresenter extends MvpPresenter<IUserView> {
         super.onFirstViewAttach();
 
         getViewState().init();
-        loadData();
+        setData();
     }
 
     @UiThread
-    private void loadData() {
-        REPOSITORIES_REPO.getRepositories(USER).observeOn(SCHEDULER).subscribe(
+    private void setData() {
+        user.getLogin().subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@androidx.annotation.NonNull Disposable d) {
+            }
+
+            @Override
+            public void onNext(@androidx.annotation.NonNull String login) {
+                Logger.showLog(Logger.INFO, TAG, "setData.onNext - " + login);
+                getViewState().setLogin(login);
+            }
+
+            @Override
+            public void onError(@androidx.annotation.NonNull Throwable e) {
+                Logger.showLog(Logger.INFO, TAG, "setData.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.showLog(Logger.INFO, TAG, "setData.onComplete");
+            }
+        });
+
+        repositoriesRepo.getRepositories(user).observeOn(scheduler).subscribe(
                 (repositories) -> {
-                    Logger.showLog(Logger.INFO, TAG, "loadData.onNext " + repositories);
+                    Logger.showLog(Logger.INFO, TAG, "setData.onNext " + repositories);
                     repositoryListPresenter.repositories.clear();
                     repositoryListPresenter.repositories.addAll(repositories);
                     getViewState().updateList();
                 },
                 (e) -> {
-                    Logger.showLog(Logger.INFO, TAG, "loadData.onError " + e.getMessage());
+                    Logger.showLog(Logger.INFO, TAG, "setData.onError " + e.getMessage());
                 }
         );
-
         getViewState().updateList();
     }
 
-    private void setData(IRepositoryItemView view, GithubRepository repository) {
+    private void setRecyclerData(IRepositoryItemView view, GithubRepository repository) {
         repository.getName().subscribe(new Observer<String>() {
-
             @Override
             public void onSubscribe(@NonNull Disposable d) {
             }
@@ -108,18 +132,18 @@ public class UserPresenter extends MvpPresenter<IUserView> {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Logger.showLog(Logger.INFO, TAG, "setData.onError");
+                Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onError");
             }
 
             @Override
             public void onComplete() {
-                Logger.showLog(Logger.INFO, TAG, "setData.onComplete");
+                Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onComplete");
             }
         });
     }
 
     public boolean backPressed() {
-        ROUTER.exit();
+        router.exit();
         return true;
     }
 }

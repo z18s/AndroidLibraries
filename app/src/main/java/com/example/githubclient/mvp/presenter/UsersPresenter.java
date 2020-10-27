@@ -2,6 +2,7 @@ package com.example.githubclient.mvp.presenter;
 
 import androidx.annotation.UiThread;
 
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.entity.GithubUser;
 import com.example.githubclient.mvp.model.repo.IGithubUsersRepo;
@@ -12,6 +13,8 @@ import com.example.githubclient.navigation.Screens;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
@@ -24,14 +27,15 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
     private static final String TAG = UsersPresenter.class.getSimpleName();
 
-    private final IGithubUsersRepo USERS_REPO;
-    private final Router ROUTER;
-    private final Scheduler SCHEDULER;
+    @Inject
+    IGithubUsersRepo usersRepo;
+    @Inject
+    Router router;
+    @Inject
+    Scheduler scheduler;
 
-    public UsersPresenter(Scheduler scheduler, IGithubUsersRepo usersRepo, Router router) {
-        SCHEDULER = scheduler;
-        USERS_REPO = usersRepo;
-        ROUTER = router;
+    public UsersPresenter() {
+        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     private class UsersListPresenter implements IUserListPresenter {
@@ -41,16 +45,16 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         public void onItemClick(IUserItemView view) {
             int index = view.getPos();
 
-            Logger.showLog(Logger.INFO, TAG, " onItemClick " + index);
+            Logger.showLog(Logger.INFO, TAG, "onItemClick " + index);
 
             GithubUser user = users.get(index);
-            ROUTER.navigateTo(new Screens.UserScreen(user));
+            router.navigateTo(new Screens.UserScreen(user));
         }
 
         @Override
         public void bindView(IUserItemView view) {
             GithubUser user = users.get(view.getPos());
-            setData(view, user);
+            setRecyclerData(view, user);
         }
 
         @Override
@@ -70,29 +74,27 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
         super.onFirstViewAttach();
 
         getViewState().init();
-        loadData();
+        setData();
     }
 
     @UiThread
-    private void loadData() {
-        USERS_REPO.getUsers().observeOn(SCHEDULER).subscribe(
+    private void setData() {
+        usersRepo.getUsers().observeOn(scheduler).subscribe(
                 (users) -> {
-                    Logger.showLog(Logger.INFO, TAG, "loadData.onNext " + users);
+                    Logger.showLog(Logger.INFO, TAG, "setData.onNext " + users);
                     userListPresenter.users.clear();
                     userListPresenter.users.addAll(users);
                     getViewState().updateList();
                 },
                 (e) -> {
-                    Logger.showLog(Logger.INFO, TAG, "loadData.onError " + e.getMessage());
+                    Logger.showLog(Logger.INFO, TAG, "setData.onError " + e.getMessage());
                 }
         );
-
         getViewState().updateList();
     }
 
-    private void setData(IUserItemView view, GithubUser user) {
+    private void setRecyclerData(IUserItemView view, GithubUser user) {
         user.getLogin().subscribe(new Observer<String>() {
-
             @Override
             public void onSubscribe(@NonNull Disposable d) {
             }
@@ -105,18 +107,18 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Logger.showLog(Logger.INFO, TAG, "setData.onError");
+                Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onError");
             }
 
             @Override
             public void onComplete() {
-                Logger.showLog(Logger.INFO, TAG, "setData.onComplete");
+                Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onComplete");
             }
         });
     }
 
     public boolean backPressed() {
-        ROUTER.exit();
+        router.exit();
         return true;
     }
 }

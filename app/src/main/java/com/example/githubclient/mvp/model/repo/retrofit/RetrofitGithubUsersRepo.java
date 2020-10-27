@@ -3,9 +3,7 @@ package com.example.githubclient.mvp.model.repo.retrofit;
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.api.IDataSource;
 import com.example.githubclient.mvp.model.cache.IGithubUsersCache;
-import com.example.githubclient.mvp.model.cache.room.RoomGithubUsersCache;
 import com.example.githubclient.mvp.model.entity.GithubUser;
-import com.example.githubclient.mvp.model.entity.room.Database;
 import com.example.githubclient.mvp.model.network.INetworkStatus;
 import com.example.githubclient.mvp.model.repo.IGithubUsersRepo;
 
@@ -18,16 +16,14 @@ public class RetrofitGithubUsersRepo implements IGithubUsersRepo {
 
     private static final String TAG = RetrofitGithubUsersRepo.class.getSimpleName();
 
-    final IDataSource api;
-    final INetworkStatus networkStatus;
-    final Database db;
-    final IGithubUsersCache usersCache;
+    private final IDataSource api;
+    private final INetworkStatus networkStatus;
+    private final IGithubUsersCache usersCache;
 
-    public RetrofitGithubUsersRepo(IDataSource api, INetworkStatus networkStatus, Database db) {
+    public RetrofitGithubUsersRepo(IDataSource api, INetworkStatus networkStatus, IGithubUsersCache usersCache) {
         this.api = api;
         this.networkStatus = networkStatus;
-        this.db = db;
-        usersCache = new RoomGithubUsersCache(db);
+        this.usersCache = usersCache;
     }
 
     @Override

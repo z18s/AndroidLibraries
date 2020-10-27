@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.githubclient.Logger;
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.R;
 import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubRepository;
@@ -17,19 +17,31 @@ import com.example.githubclient.mvp.presenter.RepositoryPresenter;
 import com.example.githubclient.mvp.view.IRepositoryView;
 import com.example.githubclient.ui.BackButtonListener;
 
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
+import javax.inject.Inject;
+
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
+import ru.terrakok.cicerone.Router;
 
 public class RepositoryFragment extends MvpAppCompatFragment implements IRepositoryView, BackButtonListener {
 
     private static final String TAG = RepositoryFragment.class.getSimpleName();
 
     private View view;
+    TextView repositoryNameTextView;
+    TextView repositoryLanguageTextView;
 
     @InjectPresenter
     RepositoryPresenter presenter;
+
+    @Inject
+    Router router;
+
+    @ProvidePresenter
+    RepositoryPresenter provideRepositoryPresenter() {
+        return new RepositoryPresenter(router, getGithubRepository());
+    }
 
     @Nullable
     @Override
@@ -41,6 +53,7 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     private GithubRepository getGithubRepository() {
@@ -49,34 +62,19 @@ public class RepositoryFragment extends MvpAppCompatFragment implements IReposit
 
     @Override
     public void init() {
-        TextView repositoryNameTextView = view.findViewById(R.id.repository_name);
-        TextView repositoryLanguageTextView = view.findViewById(R.id.repository_language);
+        repositoryNameTextView = view.findViewById(R.id.repository_name);
+        repositoryLanguageTextView = view.findViewById(R.id.repository_language);
+    }
+
+    @Override
+    public void setName(String name) {
+        repositoryNameTextView.setText(name);
+    }
+
+    @Override
+    public void setLanguage(String language) {
         String title = getResources().getString(R.string.language_title);
-        GithubRepository repository = getGithubRepository();
-
-        repository.getName().subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                Logger.showLog(Logger.INFO, TAG, "init.onSubscribe");
-            }
-
-            @Override
-            public void onNext(@NonNull String name) {
-                Logger.showLog(Logger.INFO, TAG, "init.onNext " + name);
-                repositoryNameTextView.setText(name);
-                repositoryLanguageTextView.setText(title + repository.getLanguage());
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                Logger.showLog(Logger.INFO, TAG, "init.onError");
-            }
-
-            @Override
-            public void onComplete() {
-                Logger.showLog(Logger.INFO, TAG, "init.onComplete");
-            }
-        });
+        repositoryLanguageTextView.setText(title + language);
     }
 
     @Override

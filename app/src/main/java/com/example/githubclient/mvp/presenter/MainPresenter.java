@@ -1,27 +1,31 @@
 package com.example.githubclient.mvp.presenter;
 
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.mvp.view.IMainView;
 import com.example.githubclient.navigation.Screens;
+
+import javax.inject.Inject;
 
 import moxy.MvpPresenter;
 import ru.terrakok.cicerone.Router;
 
 public class MainPresenter extends MvpPresenter<IMainView> {
 
-    private final Router ROUTER;
+    @Inject
+    Router router;
 
-    public MainPresenter(Router router) {
+    public MainPresenter() {
         super();
-        ROUTER = router;
+        GithubApplication.INSTANCE.getAppComponent().inject(this);
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        ROUTER.replaceScreen(new Screens.UsersScreen());
+        router.replaceScreen(new Screens.UsersScreen());
     }
 
     public void backClicked() {
-        ROUTER.exit();
+        router.exit();
     }
 }

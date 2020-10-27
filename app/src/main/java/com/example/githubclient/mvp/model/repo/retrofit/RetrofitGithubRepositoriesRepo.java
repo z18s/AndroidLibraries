@@ -3,10 +3,8 @@ package com.example.githubclient.mvp.model.repo.retrofit;
 import com.example.githubclient.Logger;
 import com.example.githubclient.mvp.model.api.IDataSource;
 import com.example.githubclient.mvp.model.cache.IGithubRepositoriesCache;
-import com.example.githubclient.mvp.model.cache.room.RoomGithubRepositoriesCache;
 import com.example.githubclient.mvp.model.entity.GithubRepository;
 import com.example.githubclient.mvp.model.entity.GithubUser;
-import com.example.githubclient.mvp.model.entity.room.Database;
 import com.example.githubclient.mvp.model.network.INetworkStatus;
 import com.example.githubclient.mvp.model.repo.IGithubRepositoriesRepo;
 
@@ -19,16 +17,14 @@ public class RetrofitGithubRepositoriesRepo implements IGithubRepositoriesRepo {
 
     private static final String TAG = RetrofitGithubRepositoriesRepo.class.getSimpleName();
 
-    final IDataSource api;
-    final INetworkStatus networkStatus;
-    final Database db;
-    final IGithubRepositoriesCache repositoriesCache;
+    private final IDataSource api;
+    private final INetworkStatus networkStatus;
+    private final IGithubRepositoriesCache repositoriesCache;
 
-    public RetrofitGithubRepositoriesRepo(IDataSource api, INetworkStatus networkStatus, Database db) {
+    public RetrofitGithubRepositoriesRepo(IDataSource api, INetworkStatus networkStatus, IGithubRepositoriesCache repositoriesCache) {
         this.api = api;
         this.networkStatus = networkStatus;
-        this.db = db;
-        repositoriesCache = new RoomGithubRepositoriesCache(db);
+        this.repositoriesCache = repositoriesCache;
     }
 
     @Override
