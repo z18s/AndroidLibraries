@@ -35,7 +35,7 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
     Scheduler scheduler;
 
     public UsersPresenter() {
-        GithubApplication.INSTANCE.getAppComponent().inject(this);
+        GithubApplication.INSTANCE.createUserSubcomponent().inject(this);
     }
 
     private class UsersListPresenter implements IUserListPresenter {
@@ -115,6 +115,12 @@ public class UsersPresenter extends MvpPresenter<IUsersView> {
                 Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onComplete");
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getViewState().release();
     }
 
     public boolean backPressed() {

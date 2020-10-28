@@ -7,4 +7,5 @@ import moxy.viewstate.strategy.alias.AddToEndSingle;
 public interface IUsersView extends MvpView {
     void init();
     void updateList();
+    void release();
 }

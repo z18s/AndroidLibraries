@@ -39,7 +39,7 @@ public class UserPresenter extends MvpPresenter<IUserView> {
 
     public UserPresenter(GithubUser user) {
         this.user = user;
-        GithubApplication.INSTANCE.getAppComponent().inject(this);
+        GithubApplication.INSTANCE.createRepositorySubcomponent().inject(this);
     }
 
     private class RepositoriesListPresenter implements IRepositoryListPresenter {
@@ -140,6 +140,12 @@ public class UserPresenter extends MvpPresenter<IUserView> {
                 Logger.showLog(Logger.INFO, TAG, "setRecyclerData.onComplete");
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getViewState().release();
     }
 
     public boolean backPressed() {

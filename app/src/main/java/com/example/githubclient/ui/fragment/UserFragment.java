@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.githubclient.GithubApplication;
 import com.example.githubclient.R;
 import com.example.githubclient.mvp.model.Tags;
 import com.example.githubclient.mvp.model.entity.GithubUser;
@@ -75,6 +76,11 @@ public class UserFragment extends MvpAppCompatFragment implements IUserView, Bac
     @Override
     public void updateList() {
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void release() {
+        GithubApplication.INSTANCE.releaseRepositorySubcomponent();
     }
 
     @Override

@@ -25,7 +25,7 @@ public class RepositoryPresenter extends MvpPresenter<IRepositoryView> {
 
     public RepositoryPresenter(GithubRepository repository) {
         this.repository = repository;
-        GithubApplication.INSTANCE.getAppComponent().inject(this);
+        GithubApplication.INSTANCE.createRepositorySubcomponent().inject(this);
     }
 
     @Override

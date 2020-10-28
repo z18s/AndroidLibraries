@@ -1,29 +1,25 @@
-package com.example.githubclient.di.module;
+package com.example.githubclient.di.repository;
 
 import com.example.githubclient.mvp.model.api.IDataSource;
 import com.example.githubclient.mvp.model.cache.IGithubRepositoriesCache;
-import com.example.githubclient.mvp.model.cache.IGithubUsersCache;
+import com.example.githubclient.mvp.model.cache.room.RoomGithubRepositoriesCache;
+import com.example.githubclient.mvp.model.entity.room.Database;
 import com.example.githubclient.mvp.model.network.INetworkStatus;
 import com.example.githubclient.mvp.model.repo.IGithubRepositoriesRepo;
-import com.example.githubclient.mvp.model.repo.IGithubUsersRepo;
 import com.example.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo;
-import com.example.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class RepoModule {
+public class RepositoryModule {
 
-    @Singleton
     @Provides
-    public IGithubUsersRepo usersRepo(IDataSource api, INetworkStatus status, IGithubUsersCache cache) {
-        return new RetrofitGithubUsersRepo(api, status, cache);
+    IGithubRepositoriesCache repositoriesCache(Database db) {
+        return new RoomGithubRepositoriesCache(db);
     }
 
-    @Singleton
+    @RepositoryScope
     @Provides
     public IGithubRepositoriesRepo repositoriesRepo(IDataSource api, INetworkStatus networkStatus, IGithubRepositoriesCache cache) {
         return new RetrofitGithubRepositoriesRepo(api, networkStatus, cache);
